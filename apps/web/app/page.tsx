@@ -31,6 +31,8 @@ export default function Home(){
    <div style={{marginTop:12}}><a className='btn' style={{width:'100%'}} href='/radar'>Full hype radar →</a></div>
   </div>
  </section>
+ <style>{`@keyframes home-marq{0%{transform:translateX(-8%)}100%{transform:translateX(108%)}}@media(prefers-reduced-motion:reduce){.home-marq>div{animation:none}}`}</style>
+ <div className='tile home-marq' aria-hidden='true' style={{overflow:'hidden',whiteSpace:'nowrap',margin:'4px 0 8px',padding:'12px 16px',fontSize:13,fontWeight:700}}><div style={{display:'inline-block',paddingRight:48,animation:'home-marq 18s linear infinite'}}>FUNNNNNN · FUNNNNNN · FUNNNNNN · FUNNNNNN · FUNNNNNN · FUNNNNNN · FUNNNNNN · FUNNNNNN ·&nbsp;</div></div>
  <section style={{padding:'8px 0 40px'}}>
   <h2>How to play</h2>
   <p className='lead'>Three moves. No KYC. Zero real losses.</p>
