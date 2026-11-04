@@ -1,0 +1,21 @@
+# deps
+node_modules/
+# builds
+.next/
+out/
+dist/
+# env & secrets — copy dari .env.example, jangan commit
+.env
+.env.local
+.env*.local
+services/api/.env
+apps/web/.env.local
+# runtime noise
+logs/
+*.log
+.DS_Store
+# local postgres experiments
+.pgdata*/
+# dev fallback store (saldo lokal, bukan data asli)
+services/api/data/
+services/x-bot/data/state.json

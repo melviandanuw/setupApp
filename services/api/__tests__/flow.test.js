@@ -1,0 +1,15 @@
+const request = require('supertest');
+process.env.JWT_SECRET = 'test-secret-12345678901234567890';
+process.env.TOKEN_ENC_KEY = 'ab'.repeat(32);
+process.env.CREATOR_X_USER_ID = '123';
+process.env.FRONTEND_URL = 'http://localhost:3000';
+process.env.X_LOGIN_REQUIRED = 'true';
+jest.mock('../src/lib/db', () => ({ query: jest.fn(), pool: { connect: jest.fn() } })); jest.mock('../src/lib/redis', () => ({ redis: { get: jest.fn(), setex: jest.fn(), del: jest.fn(), hgetall: jest.fn(), hset: jest.fn() } })); jest.mock('../src/lib/price', () => ({ getPrice: jest.fn() }));
+const{query,pool}=require('../src/lib/db');const{redis}=require('../src/lib/redis');const{getPrice}=require('../src/lib/price');
+describe('gating',()=>{test('follow cache hit true',async()=>{redis.get.mockResolvedValue('1');query.mockResolvedValue({rowCount:1,rows:[{is_gated:false}]});const jwt=require('jsonwebtoken');process.env.JWT_SECRET='test-secret-12345678901234567890';const t=jwt.sign({uid:'u1'},process.env.JWT_SECRET);const app=require('../src/index');const r=await request(app).get('/auth/x/follow-status').set('Cookie',`wenits=${t}`);expect(r.body.following).toBe(true);});
+test('gated user blocked trade',async()=>{query.mockResolvedValue({rowCount:1,rows:[{is_gated:true}]});const jwt=require('jsonwebtoken');const t=jwt.sign({uid:'u1'},process.env.JWT_SECRET);const app=require('../src/index');const r=await request(app).post('/trade').set('Cookie',`wenits=${t}`).send({mint:'5zpyutJu9ee6jFymDGoK7F6S5Kczqtc9FomP3ueKuyA9',side:'buy',usd:10,idempotencyKey:'k12345678'});expect([403,400]).toContain(r.status);});});
+describe('race', () => { test('duplicate idempotency short-circuit', async () => {query.mockResolvedValue({rowCount:1,rows:[{is_gated:false}]});getPrice.mockResolvedValue({price:1});pool.connect.mockResolvedValue({query:jest.fn(async(s)=>s.startsWith('SELECT id FROM trades')?{rowCount:1}:{}),release:jest.fn()});const jwt = require('jsonwebtoken'); const t = jwt.sign({ uid: 'u1' }, process.env.JWT_SECRET); const app = require('../src/index'); const r = await request(app).post('/trade').set('Cookie', `wenits=${t}`).send({ mint: '5zpyutJu9ee6jFymDGoK7F6S5Kczqtc9FomP3ueKuyA9', side: 'buy', usd: 5, idempotencyKey: 'dup-key-1' }); expect(r.body.duplicate).toBe(true); }); });
+describe('dev-bypass', () => {
+  test('x/login 404 saat X_LOGIN_REQUIRED=false', async () => { process.env.X_LOGIN_REQUIRED = 'false'; const app = require('../src/index'); const r = await request(app).get('/auth/x/login'); expect(r.status).toBe(404); process.env.X_LOGIN_REQUIRED = 'true'; });
+  test('trade tanpa cookie lolos saat OFF', async () => { process.env.X_LOGIN_REQUIRED = 'false'; getPrice.mockResolvedValue({ price: 1 }); pool.connect.mockResolvedValue({ query: jest.fn(async (s) => s.startsWith('SELECT id FROM trades') ? { rowCount: 1 } : { rowCount: 0 }), release: jest.fn() }); const app = require('../src/index'); const r = await request(app).post('/trade').send({ mint: '5zpyutJu9ee6jFymDGoK7F6S5Kczqtc9FomP3ueKuyA9', side: 'buy', usd: 5, idempotencyKey: 'dev-noauth-1' }); expect(r.body.duplicate).toBe(true); process.env.X_LOGIN_REQUIRED = 'true'; });
+});

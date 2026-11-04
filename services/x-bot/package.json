@@ -1,0 +1,1 @@
+{"name":"wenits-xbot","version":"0.1.0","type":"commonjs","scripts":{"bot":"node src/bot.js","once":"node src/bot.js --once","dry":"node src/bot.js --once --dry-run"},"dependencies":{"dotenv":"^18.0.9"}}
