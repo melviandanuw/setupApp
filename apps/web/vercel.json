@@ -1,0 +1,7 @@
+{
+  "framework": "nextjs",
+  "buildCommand": "next build",
+  "env": {
+    "NEXT_PUBLIC_X_LOGIN_REQUIRED": "false"
+  }
+}

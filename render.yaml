@@ -1,0 +1,40 @@
+services:
+  - type: web
+    name: wenits-api
+    runtime: node
+    rootDir: services/api
+    buildCommand: npm install
+    startCommand: node src/index.js
+    healthCheckPath: /health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 8080
+      - key: DATABASE_URL
+        sync: false
+      - key: REDIS_URL
+        sync: false
+      - key: JWT_SECRET
+        generateValue: true
+      - key: TOKEN_ENC_KEY
+        generateValue: true
+      - key: CORS_ORIGINS
+        sync: false
+      - key: FRONTEND_URL
+        sync: false
+      - key: X_LOGIN_REQUIRED
+        value: "false"
+      - key: PRICE_STALE_MS
+        value: "15000"
+  - type: worker
+    name: wenits-price-writer
+    runtime: node
+    rootDir: services/api
+    buildCommand: npm install
+    startCommand: node src/jobs/price-writer.js
+    envVars:
+      - key: REDIS_URL
+        sync: false
+      - key: PRICE_WRITE_INTERVAL_MS
+        value: "60000"
