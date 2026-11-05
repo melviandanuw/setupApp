@@ -16,6 +16,8 @@ logs/
 .DS_Store
 # local postgres experiments
 .pgdata*/
-# dev fallback store (saldo lokal, bukan data asli)
-services/api/data/
+# local agent skills + lockfiles
+.hermes/
+skills-lock.json
+*.tsbuildinfo
 services/x-bot/data/state.json

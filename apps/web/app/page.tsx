@@ -31,12 +31,12 @@ export default function Home(){
    <div style={{marginTop:12}}><a className='btn' style={{width:'100%'}} href='/radar'>Full hype radar →</a></div>
   </div>
  </section>
- <style>{`@keyframes home-marq{0%{transform:translateX(-8%)}100%{transform:translateX(108%)}}@media(prefers-reduced-motion:reduce){.home-marq>div{animation:none}}`}</style>
+ <style>{`@keyframes home-marq{0%{transform:translateX(-50%)}100%{transform:translateX(0)}}@media(prefers-reduced-motion:reduce){.home-marq>div{animation:none}}`}</style>
  <section style={{padding:'8px 0 40px'}}>
   <div style={{display:'flex',alignItems:'center',gap:16,flexWrap:'wrap'}}>
    <div style={{flex:'1 1 220px',minWidth:0}}><h2>How to play</h2>
    <p className='lead'>Three moves. No KYC. Zero real losses.</p></div>
-   <div className='tile home-marq' aria-hidden='true' style={{overflow:'hidden',whiteSpace:'nowrap',padding:'10px 14px',fontSize:13,fontWeight:700,maxWidth:200,flex:'0 1 200px'}}><div style={{display:'inline-block',paddingRight:32,animation:'home-marq 8s linear infinite'}}>FUNNNNNN · FUNNNNNN ·&nbsp;</div></div>
+   <div className='tile home-marq' aria-hidden='true' style={{overflow:'hidden',whiteSpace:'nowrap',padding:'10px 14px',fontSize:13,fontWeight:700,maxWidth:200,flex:'0 1 200px'}}><div style={{display:'inline-flex',gap:32,paddingRight:32,animation:'home-marq 8s linear infinite',willChange:'transform'}}><span>FUNNNNNN · FUNNNNNN ·&nbsp;</span><span>FUNNNNNN · FUNNNNNN ·&nbsp;</span></div></div>
   </div>
   <div className='narr-grid' style={{marginTop:20}}>
    <div className='tile' style={{padding:22}}><div className='figure' style={{fontSize:40}}>01</div><h3 style={{margin:'8px 0'}}>Scan the hype</h3><p style={{color:'var(--color-muted)',fontSize:14,margin:0}}>Real Solana trending pools plus a moon score. Practice reading hype before risking anything.</p></div>
