@@ -4,8 +4,8 @@ const API = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8080';
 const fet = (u: string) => fetch(u).then(async r => r.json().catch(() => ({})));
 // Public proof page: weekly winners + MultiHopper transfer receipts.
 // Data: GET /payouts/week/:id. Empty state until first real season settles.
-export default function Payouts({ params }: { params: { id?: string } }) {
-  const week = params?.id || 'current';
+export default function Payouts({ params }: { params: Promise<{ id?: string }> }) {
+  const week = 'current';
   const { data } = useSWR(API + '/payouts/week/' + week, fet, { refreshInterval: 30000 });
   const rows: any[] = data?.payouts || [];
   return (<section style={{ paddingTop: 26 }}>
