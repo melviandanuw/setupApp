@@ -10,8 +10,8 @@
 
 **Nama:** Wenits.fun — Solana Degen Arena & Moon Radar
 **Tagline:** Discover trending Solana memecoins and practice trading risk-free.
-**Live URL:** (isi setelah deploy — Vercel, `apps/web/vercel.json` sudah ada)
-**Repo:** https://github.com/melviandanuw/setupApp (PRIVATE-kan sebelum share, atau buat repo publik baru khusus grant)
+**Live URL:** https://wenits.fun (Vercel, API: https://wenits-fun-production.up.railway.app)
+**Repo:** https://github.com/melviandanuw/wenits-fun (publik, grant-ready)
 **Stack (verified dari repo):** Next.js 15.1 + React 19 (web :3000), Express 4 (API :8080), PostgreSQL, Redis, Python scraper. Solana: GeckoTerminal/DexScreener feeds, Jupiter (rencana), pump.fun (rencana $WenFUN fair launch).
 **Status:** Live di dev mode. Moon Radar (live trending pools + Moon Score 0–100 + candles), Degen Arena (paper trading $10.000 virtual, anti double-spend, stale-price reject), Weekly board (top 100), X-gating opsional fail-closed.
 **Kualitas:** 71 tests hijau di 14 suites (`services/api/__tests__` 12 suites + `apps/web/__tests__` 2 suites), idempotency anti double-spend, stale-price reject 15 detik.
