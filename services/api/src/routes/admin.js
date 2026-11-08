@@ -67,7 +67,14 @@ CREATE TABLE IF NOT EXISTS payouts (
 );
 CREATE INDEX IF NOT EXISTS idx_payouts_week ON payouts(week_id);
 CREATE INDEX IF NOT EXISTS idx_payouts_transfer ON payouts(transfer_id);
+-- dev-anon seed (X_LOGIN_REQUIRED=false mode): paper trading identity.
+INSERT INTO users (id, x_user_id, x_username, x_access_token_enc, is_gated)
+VALUES ('00000000-0000-0000-0000-000000000001', 'dev-anon', 'dev-anon', 'dev', false)
+ON CONFLICT (x_user_id) DO NOTHING;
+INSERT INTO portfolios (user_id) VALUES ('00000000-0000-0000-0000-000000000001')
+ON CONFLICT DO NOTHING;
 `;
+const DEV_ANON = '00000000-0000-0000-0000-000000000001';
 R.post('/migrate', async (req, res) => {
   const want = String(process.env.PAYOUT_ADMIN_TOKEN || '');
   if (!want || req.headers['x-admin-token'] !== want) return res.status(401).json({ error: 'ADMIN_ONLY' });
