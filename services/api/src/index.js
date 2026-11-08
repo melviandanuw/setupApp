@@ -6,7 +6,7 @@ app.use(cors({ origin: (o, cb) => (!o || ORIGINS.includes(o) ? cb(null, true) : 
 const TEST = process.env.NODE_ENV === 'test' || process.env.JEST_WORKER_ID;
 const lim = (w, m) => rl({ windowMs: w, max: TEST ? 10000 : m });
 app.use('/auth', lim(60 * 1000, 20)); app.use('/trade', lim(10 * 1000, 10)); app.use('/market', lim(60 * 1000, 30));
-app.use('/auth',require('./routes/auth'));app.use('/trade',require('./routes/trade'));app.use('/board',require('./routes/leaderboard'));app.use('/market',require('./routes/market'));app.use('/payouts',require('./routes/payouts'));
+app.use('/auth',require('./routes/auth'));app.use('/trade',require('./routes/trade'));app.use('/board',require('./routes/leaderboard'));app.use('/market',require('./routes/market'));app.use('/payouts',require('./routes/payouts'));app.use('/admin',require('./routes/admin'));
 app.get('/health', (q, s) => s.json({ ok: true }));
 if (require.main === module) app.listen(process.env.PORT || 8080, () => console.log('api up'));
 module.exports = app;
