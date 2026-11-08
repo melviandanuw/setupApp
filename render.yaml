@@ -27,6 +27,16 @@ services:
         value: "false"
       - key: PRICE_STALE_MS
         value: "15000"
+      - key: MH_BASE_URL
+        value: "https://multihopper.com"
+      - key: MH_API_KEY
+        sync: false
+      - key: MH_WEBHOOK_SECRET
+        sync: false
+      - key: PAYOUT_TREASURY_WALLET
+        sync: false
+      - key: PAYOUT_ADMIN_TOKEN
+        generateValue: true
   - type: worker
     name: wenits-price-writer
     runtime: node
@@ -38,3 +48,8 @@ services:
         sync: false
       - key: PRICE_WRITE_INTERVAL_MS
         value: "60000"
+databases:
+  - name: wenits-db
+    plan: free
+# Redis: buat manual di dashboard (New -> Key Value, free) lalu isi REDIS_URL di kedua service.
+# (Blueprint 'databases' hanya support Postgres.)
