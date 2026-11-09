@@ -85,4 +85,23 @@ R.post('/migrate', async (req, res) => {
     res.json({ ok: true, tables: t.rows.map(r => r.table_name) });
   } catch (e) { res.status(500).json({ error: 'MIGRATE_FAILED', detail: e.message }); }
 });
+// Debug: is Redis reachable + what px:* keys exist (token-guarded, values truncated).
+R.get('/redis-debug', async (req, res) => {
+  const want = String(process.env.PAYOUT_ADMIN_TOKEN || '');
+  if (!want || req.headers['x-admin-token'] !== want) return res.status(401).json({ error: 'ADMIN_ONLY' });
+  try {
+    const { redis } = require('../lib/redis');
+    const pong = await redis.ping();
+    let keys = [];
+    try { keys = await redis.keys('px:*'); } catch (_) { keys = ['KEYS_BLOCKED']; }
+    const sample = [];
+    for (const k of keys.slice(0, 7)) {
+      try {
+        const h = await redis.hgetall(k);
+        sample.push({ key: k.slice(0, 20) + '...', price: h.price, age_s: Math.round((Date.now() - parseInt(h.ts || '0', 10)) / 1000) });
+      } catch (e) { sample.push({ key: k, err: e.message }); }
+    }
+    res.json({ ok: true, ping: pong, px_count: keys.length, sample });
+  } catch (e) { res.status(500).json({ error: 'REDIS_DEBUG_FAILED', detail: e.message }); }
+});
 module.exports = R;
